@@ -5,6 +5,21 @@
     android:layout_height="match_parent">
 
 
+    <Spinner
+        android:id="@+id/spinnerFrom"
+        android:layout_width="173dp"
+        android:layout_height="34dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="118dp"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp" />
+
     <EditText
         android:id="@+id/valueFrom"
         android:layout_width="wrap_content"
@@ -21,38 +36,6 @@
         android:layout_marginRight="96dp"
         android:ems="10"
         android:inputType="number" />
-
-    <EditText
-        android:id="@+id/valueTo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerTo"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginLeft="97dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="101dp"
-        android:layout_marginRight="101dp"
-        android:ems="10"
-        android:inputType="number" />
-
-    <Spinner
-        android:id="@+id/spinnerFrom"
-        android:layout_width="173dp"
-        android:layout_height="34dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginLeft="118dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp" />
 
     <Spinner
         android:id="@+id/spinnerTo"
@@ -84,4 +67,22 @@
         android:layout_marginEnd="136dp"
         android:layout_marginRight="136dp"
         android:text="Oblicz" />
+
+    <EditText
+        android:id="@+id/valueTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerTo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="97dp"
+        android:layout_marginLeft="97dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginRight="101dp"
+        android:ems="10"
+        android:inputType="number" />
+
 </RelativeLayout>
