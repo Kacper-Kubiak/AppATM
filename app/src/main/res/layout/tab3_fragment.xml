@@ -13,10 +13,4 @@
         android:layout_marginTop="40dp"
         android:id="@+id/textTab3"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnTEST3"
-        android:text="TESTBTN 3"/>
-
 </RelativeLayout>

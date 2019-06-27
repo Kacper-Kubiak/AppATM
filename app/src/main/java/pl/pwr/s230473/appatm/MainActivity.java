@@ -5,7 +5,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-
+/*
+    * Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY
+ */
 public class MainActivity extends AppCompatActivity {
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
@@ -29,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         setupTabIcons();
@@ -45,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Tab1Fragment(), tabName[0]);
-        adapter.addFragment(new Tab2Fragment(), tabName[1]);
+        adapter.addFragment(new ExchangeFragment(), tabName[0]);
+        adapter.addFragment(new CurrencyFragment(), tabName[1]);
         adapter.addFragment(new Tab3Fragment(), tabName[2]);
         viewPager.setAdapter(adapter);
     }
