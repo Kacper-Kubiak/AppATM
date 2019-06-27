@@ -1,12 +1,12 @@
 package pl.pwr.s230473.appatm;
 
-public class Currency {
+public class CurrencyCustom {
     private String name;
     private double bid;
     private double ask;
     private double med;
 
-    public Currency(String name, double bid, double ask)
+    public CurrencyCustom(String name, double bid, double ask)
     {
         this.name = name;
         this.bid = bid;

@@ -1,5 +1,6 @@
 package pl.pwr.s230473.appatm;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -8,20 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
+@SuppressLint("ValidFragment")
 public class CurrencyFragment extends ListFragment {
     private static final String TAG = "CurrencyFragment";
 
-    String[] TEST = {"EUR", "USD"};
-    ArrayList<Currency> currencyList = new ArrayList<Currency>();
+    private String base = "PLN";
+    private ArrayList<CurrencyCustom> currencyCustomList = new ArrayList<CurrencyCustom>();
+    private ArrayList<CurrencyExchange> currencyExchangesList = new ArrayList<CurrencyExchange>();
 
-    public CurrencyFragment()
+    @SuppressLint("ValidFragment")
+    public CurrencyFragment(ArrayList<CurrencyExchange> currencyExchangesList)
     {
-        loadedCurrency();
+        this.currencyExchangesList = currencyExchangesList;
     }
 
     @Nullable
@@ -29,11 +30,27 @@ public class CurrencyFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.currency_fragment,container,false);
         ListView listView = view.findViewById(android.R.id.list);
-        CustomAdapter customAdapter = new CustomAdapter(getActivity(), currencyList);
+        loadedCurrency();
+        CustomAdapter customAdapter = new CustomAdapter(getActivity(), currencyCustomList, base);
         listView.setAdapter(customAdapter);
         return view;
     }
-    public void loadedCurrency()
+
+    private void loadedCurrency()
+    {
+        for(int i=0; i<currencyExchangesList.size(); i++)
+        {
+            if(!base.equals(currencyExchangesList.get(i).getBase())) continue;
+            CurrencyExchange currencyExchange = currencyExchangesList.get(i);
+            for(int j=0; j<currencyExchange.getCurrencyListCount(); j++)
+            {
+                CurrencyCustom currencyCustom = currencyExchange.getCurrencyCustomList().get(j);
+                currencyCustomList.add(currencyCustom);
+            }
+        }
+    }
+
+    /*public void loadedCurrency()
     {
         //{"base":"PLN","rates":{"EUR":{"bid":4.3159,"ask":4.3909},"USD":{"bid":3.7159,"ask":3.7909},"PLN":{"bid":1,"ask":1}}}
         String json = "{\"base\":\"PLN\",\"rates\":{\"EUR\":{\"bid\":4.3159,\"ask\":4.3909},\"USD\":{\"bid\":3.7159,\"ask\":3.7909},\"PLN\":{\"bid\":1,\"ask\":1}}}";
@@ -45,21 +62,21 @@ public class CurrencyFragment extends ListFragment {
             JSONObject EUR  = rates.getJSONObject("EUR");
             Double bid = EUR.getDouble("bid");
             Double ask = EUR.getDouble("ask");
-            Currency eur = new Currency("EUR", bid, ask);
-            currencyList.add(eur);
+            CurrencyCustom eur = new CurrencyCustom("EUR", bid, ask);
+            currencyCustomList.add(eur);
             JSONObject USD  = rates.getJSONObject("USD");
             bid = USD.getDouble("bid");
             ask = USD.getDouble("ask");
-            Currency usd = new Currency("USD", bid, ask);
-            currencyList.add(usd);
+            CurrencyCustom usd = new CurrencyCustom("USD", bid, ask);
+            currencyCustomList.add(usd);
 
             JSONObject PLN  = rates.getJSONObject("PLN");
             bid = PLN.getDouble("bid");
             ask = PLN.getDouble("ask");
-            Currency pln = new Currency("PLN", bid, ask);
-            currencyList.add(pln);
+            CurrencyCustom pln = new CurrencyCustom("PLN", bid, ask);
+            currencyCustomList.add(pln);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

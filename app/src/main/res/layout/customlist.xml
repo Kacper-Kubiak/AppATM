@@ -27,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/currencyTextView"
-        android:layout_marginStart="41dp"
-        android:layout_marginLeft="41dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginLeft="67dp"
+        android:layout_marginTop="9dp"
         android:layout_toEndOf="@+id/countryFrom"
         android:layout_toRightOf="@+id/countryFrom"
         android:text="TextView"
@@ -66,16 +66,16 @@
 
     <TextView
         android:id="@+id/countryFrom"
-        android:textSize="32dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
         android:layout_marginTop="32dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="32dp" />
 
     <TextView
         android:id="@+id/countryTo"
@@ -84,9 +84,9 @@
         android:layout_below="@+id/countryFrom"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginLeft="42dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="7dp"
         android:text="TextView"
         android:textSize="32dp" />
 </RelativeLayout>

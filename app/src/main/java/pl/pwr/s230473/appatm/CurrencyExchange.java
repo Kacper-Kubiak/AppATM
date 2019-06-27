@@ -8,11 +8,11 @@ public class CurrencyExchange {
     private String shortCode; // "PL"
     private String code; // "PLN"
 
-    ArrayList<Currency> currencyList = new ArrayList<Currency>(); // Name, Bid, Ask
+    ArrayList<CurrencyCustom> currencyCustomList = new ArrayList<CurrencyCustom>(); // Name, Bid, Ask
 
-    public CurrencyExchange(String name, String shortCode, String code,ArrayList<Currency> currencyList)
+    public CurrencyExchange(String name, String shortCode, String code,ArrayList<CurrencyCustom> currencyCustomList)
     {
-        this.currencyList = currencyList;
+        this.currencyCustomList = currencyCustomList;
         new CurrencyExchange(name, shortCode, code);
     }
 
@@ -33,17 +33,17 @@ public class CurrencyExchange {
     public String getCode() { return code; }
     public void setCode(String code) { this.code=code; }
 
-    public ArrayList<Currency> getCurrencyList() { return currencyList; }
-    public void setCurrencyList(ArrayList<Currency> currencyList) { this.currencyList=currencyList; }
+    public ArrayList<CurrencyCustom> getCurrencyCustomList() { return currencyCustomList; }
+    public void setCurrencyCustomList(ArrayList<CurrencyCustom> currencyCustomList) { this.currencyCustomList = currencyCustomList; }
 
-    public void addCurrent(Currency currency)
+    public void addCurrent(CurrencyCustom currencyCustom)
     {
-        currencyList.add(currency);
+        currencyCustomList.add(currencyCustom);
     }
 
     public int getCurrencyListCount()
     {
-        return currencyList.size();
+        return currencyCustomList.size();
     }
 
 }

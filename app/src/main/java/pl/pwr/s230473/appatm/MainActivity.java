@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     ArrayList<CurrencyExchange> currencyExchangesList = new ArrayList<CurrencyExchange>();
 
-    private final String[] currencyBaseTab = {"PLN","USD","EUR","GBP"};
+    private final String[] currencyBaseTab = {"PLN","USD","EUR","GBP","CHF"};
 
     private int[] tabIcons = {
             R.drawable.ic_action_dollar_symbol,
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new ExchangeFragment(currencyExchangesList), tabName[0]);
-        adapter.addFragment(new CurrencyFragment(), tabName[1]);
+        adapter.addFragment(new CurrencyFragment(currencyExchangesList), tabName[1]);
         adapter.addFragment(new Tab3Fragment(), tabName[2]);
         viewPager.setAdapter(adapter);
     }
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
                 /*JSONObject currentJSON  = rates.getJSONObject(currencyBaseTab[i]);
                 Double bid = currentJSON.getDouble("bid");
                 Double ask = currentJSON.getDouble("ask");*/
-                Currency currency = new Currency(currencyBaseTab[i], bid, ask);
-                currencyExchange.addCurrent(currency);
+                CurrencyCustom currencyCustom = new CurrencyCustom(currencyBaseTab[i], bid, ask);
+                currencyExchange.addCurrent(currencyCustom);
             }
             currencyExchangesList.add(currencyExchange);
         } catch (JSONException e) {

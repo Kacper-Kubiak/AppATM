@@ -11,12 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +57,8 @@ public class ExchangeFragment extends Fragment {
             {
                 for(int j=0; j<currencyExchange.getCurrencyListCount(); j++)
                 {
-                    Currency currency = currencyExchange.getCurrencyList().get(j);
-                    seclist.add(currency.getName());
+                    CurrencyCustom currencyCustom = currencyExchange.getCurrencyCustomList().get(j);
+                    seclist.add(currencyCustom.getName());
                 }
             }
         }
@@ -114,9 +110,9 @@ public class ExchangeFragment extends Fragment {
                 CurrencyExchange currencyExchange = currencyExchangesList.get(i);
                 for(int j=0; j<currencyExchange.getCurrencyListCount(); j++)
                 {
-                    if(!selectedToItem.equals(currencyExchange.getCurrencyList().get(j).getName())) continue;
-                    Currency currency = currencyExchange.getCurrencyList().get(j);
-                    valueTo = currency.getMed();
+                    if(!selectedToItem.equals(currencyExchange.getCurrencyCustomList().get(j).getName())) continue;
+                    CurrencyCustom currencyCustom = currencyExchange.getCurrencyCustomList().get(j);
+                    valueTo = currencyCustom.getMed();
                 }
             }
             Double amount = valueFrom * valueTo;
@@ -136,8 +132,8 @@ public class ExchangeFragment extends Fragment {
             CurrencyExchange currencyExchange = currencyExchangesList.get(i);
             for(int j=0; j<currencyExchange.getCurrencyListCount(); j++)
             {
-                Currency currency = currencyExchange.getCurrencyList().get(j);
-                list.add(currency.getName());
+                CurrencyCustom currencyCustom = currencyExchange.getCurrencyCustomList().get(j);
+                list.add(currencyCustom.getName());
             }
         }
 

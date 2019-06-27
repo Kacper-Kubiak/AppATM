@@ -9,24 +9,32 @@ import android.widget.TextView;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class CustomAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private final Activity activity;
-    private final ArrayList<Currency> currencyList;
+    private final ArrayList<CurrencyCustom> currencyCustomList;
+    private final String base;
 
-    //public CustomAdapter(Activity activity, String[] TEST)
-    public CustomAdapter(Activity activity, ArrayList<Currency> currencyList)
+    public CustomAdapter(Activity activity, ArrayList<CurrencyCustom> currencyCustomList, String base)
     {
         this.activity = activity;
-        this.currencyList = currencyList;
+        this.currencyCustomList = currencyCustomList;
+        this.base = base;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return currencyList.size();
+        return currencyCustomList.size();
     }
 
     @Override
@@ -54,44 +62,51 @@ public class CustomAdapter extends BaseAdapter {
         TextView currencyBuy = vi.findViewById(R.id.currencyBuy);
         TextView currencySell = vi.findViewById(R.id.currencySell);
 
-        int flagOffset = 0x1F1E6;
-        int asciiOffset = 0x41;
+        CurrencyCustom currencyCustom = currencyCustomList.get(position);
 
-        String country_from = "US";
-        String country_to = "PL";
-
-        int firstChar_from = Character.codePointAt(country_from, 0) - asciiOffset + flagOffset;
-        int secondChar_from = Character.codePointAt(country_from, 1) - asciiOffset + flagOffset;
-
-        int firstChar_to = Character.codePointAt(country_to, 0) - asciiOffset + flagOffset;
-        int secondChar_to = Character.codePointAt(country_to, 1) - asciiOffset + flagOffset;
-
-        String flag_from = new String(Character.toChars(firstChar_from))
-                + new String(Character.toChars(secondChar_from));
-        String flag_to = new String(Character.toChars(firstChar_to))
-                + new String(Character.toChars(secondChar_to));
-
-        Currency currency = currencyList.get(position);
-        countryFrom.setText(flag_from);
-        countryTo.setText(getFlat("DE"));
-        currencyTextView.setText(currency.getName());
-        currencyValue.setText("1 " + currency.getName());
-        String bidText = String.valueOf(currency.getBid());
-        String askText = String.valueOf(currency.getAsk());
+        /*Map<String, Locale> localeMap;
+        String[] countries = Locale.getISOCountries();
+        localeMap = new HashMap<String, Locale>(countries.length);
+        for (String country : countries) {
+            Locale locale = new Locale("", country);
+            localeMap.put(locale.getISO3Country().toUpperCase(), locale);
+        }*/
+        countryFrom.setText(Utils.getCurrencySymbol(base));
+        countryTo.setText(Utils.getCurrencySymbol(currencyCustom.getName()));
+        currencyTextView.setText(currencyCustom.getName());
+        currencyValue.setText("1 " + currencyCustom.getName());
+        String bidText = String.valueOf(currencyCustom.getBid());
+        String askText = String.valueOf(currencyCustom.getAsk());
         currencyBuy.setText(bidText);
         currencySell.setText(askText);
 
         return vi;
     }
 
-    public String getFlat(String code)
-    {
-        if (code.length() != 2) {
-            return "";
+    static class Utils {
+        public static SortedMap<Currency, Locale> currencyLocaleMap;
+
+        static {
+            currencyLocaleMap = new TreeMap<Currency, Locale>(new Comparator<Currency>() {
+                public int compare(Currency c1, Currency c2) {
+                    return c1.getCurrencyCode().compareTo(c2.getCurrencyCode());
+                }
+            });
+            for (Locale locale : Locale.getAvailableLocales()) {
+                try {
+                    Currency currency = Currency.getInstance(locale);
+                    currencyLocaleMap.put(currency, locale);
+                } catch (Exception e) {
+                }
+            }
         }
-        String countryCodeCaps = code.toUpperCase();
-        int firstLetter = Character.codePointAt(countryCodeCaps, 0) - 0x41 + 0x1F1E6;
-        int secondLetter = Character.codePointAt(countryCodeCaps, 1) - 0x41 + 0x1F1E6;
-        return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+
+
+        public static String getCurrencySymbol(String currencyCode) {
+            Currency currency = Currency.getInstance(currencyCode);
+            System.out.println(currencyCode + ":-" + currency.getSymbol(currencyLocaleMap.get(currency)));
+            return currency.getSymbol(currencyLocaleMap.get(currency));
+        }
+
     }
 }
