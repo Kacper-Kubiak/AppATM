@@ -22,15 +22,6 @@ public class CurrencyFragment extends ListFragment {
     public CurrencyFragment()
     {
         loadedCurrency();
-        /*try {
-            JSONObject JSON = new JsonTask(this).execute("http://localhost/currency.php").get();
-            int i = 0;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        int i = 0;*/
     }
 
     @Nullable
