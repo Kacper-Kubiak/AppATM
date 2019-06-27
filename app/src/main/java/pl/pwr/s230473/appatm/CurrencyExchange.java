@@ -41,4 +41,9 @@ public class CurrencyExchange {
         currencyList.add(currency);
     }
 
+    public int getCurrencyListCount()
+    {
+        return currencyList.size();
+    }
+
 }

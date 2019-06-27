@@ -35,7 +35,7 @@
         android:layout_marginEnd="96dp"
         android:layout_marginRight="96dp"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number|numberDecimal" />
 
     <Spinner
         android:id="@+id/spinnerTo"
@@ -53,23 +53,23 @@
         android:layout_marginRight="120dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/countButton"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/valueTo"
+        android:layout_below="@+id/calcValue"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="129dp"
-        android:layout_marginLeft="129dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="136dp"
-        android:layout_marginRight="136dp"
+        android:layout_marginStart="134dp"
+        android:layout_marginLeft="134dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginRight="131dp"
         android:text="Oblicz" />
 
-    <EditText
-        android:id="@+id/valueTo"
+    <TextView
+        android:id="@+id/calcValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinnerTo"
@@ -77,12 +77,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginLeft="97dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="101dp"
-        android:layout_marginRight="101dp"
-        android:ems="10"
-        android:inputType="number" />
+        android:layout_marginStart="117dp"
+        android:layout_marginLeft="117dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginRight="115dp"
+        android:gravity="center"
+        android:text="0" />
 
 </RelativeLayout>
