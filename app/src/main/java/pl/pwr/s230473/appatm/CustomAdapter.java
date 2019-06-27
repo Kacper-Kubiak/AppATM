@@ -8,22 +8,25 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 import android.content.Context;
 
+import java.util.ArrayList;
+
 public class CustomAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private final Activity activity;
-    private final String[] TEST;
+    private final ArrayList<Currency> currencyList;
 
-    public CustomAdapter(Activity activity, String[] TEST)
+    //public CustomAdapter(Activity activity, String[] TEST)
+    public CustomAdapter(Activity activity, ArrayList<Currency> currencyList)
     {
         this.activity = activity;
+        this.currencyList = currencyList;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.TEST = TEST;
     }
 
     @Override
     public int getCount() {
-        return TEST.length;
+        return currencyList.size();
     }
 
     @Override
@@ -68,12 +71,15 @@ public class CustomAdapter extends BaseAdapter {
         String flag_to = new String(Character.toChars(firstChar_to))
                 + new String(Character.toChars(secondChar_to));
 
+        Currency currency = currencyList.get(position);
         countryFrom.setText(flag_from);
         countryTo.setText(getFlat("DE"));
-        currencyTextView.setText(TEST[position]);
-        currencyValue.setText(TEST[position]);
-        currencyBuy.setText(TEST[position]);
-        currencySell.setText(TEST[position]);
+        currencyTextView.setText(currency.getName());
+        currencyValue.setText("1 " + currency.getName());
+        String bidText = String.valueOf(currency.getBid());
+        String askText = String.valueOf(currency.getAsk());
+        currencyBuy.setText(bidText);
+        currencySell.setText(askText);
 
         return vi;
     }

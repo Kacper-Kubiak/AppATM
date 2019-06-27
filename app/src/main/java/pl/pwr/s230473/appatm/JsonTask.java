@@ -5,15 +5,19 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
-public class JsonTask extends AsyncTask<String, String, String> {
+public class JsonTask extends AsyncTask<String, String, JSONObject> {
 
     private static final String DEBUG = "DEBUG";
 
@@ -23,55 +27,44 @@ public class JsonTask extends AsyncTask<String, String, String> {
     {
         this.parent = parent;
     }
-    protected String doInBackground(String... params) {
+    protected JSONObject doInBackground(String... params) {
 
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-
+        HttpURLConnection urlConnection = null;
+        URL url = null;
+        String jsonString = null;
         try {
-            URL url = new URL(params[0]);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
+            url = new URL("http://localhost/currency.php");
 
+        urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setReadTimeout(10000 /* milliseconds */ );
+        urlConnection.setConnectTimeout(15000 /* milliseconds */ );
+        urlConnection.setDoOutput(true);
+        urlConnection.connect();
 
-            InputStream stream = connection.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+        StringBuilder sb = new StringBuilder();
 
-            reader = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        br.close();
 
-            StringBuffer buffer = new StringBuffer();
-            String line = "";
-
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line+"\n");
-                Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-            }
-
-            return buffer.toString();
-
-
+        jsonString = sb.toString();
+        System.out.println("JSON: " + jsonString);
         } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-        return null;
-    }
-    @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-        parent.json = result;
-        Log.d(DEBUG, result);
+        try {
+            return new JSONObject(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new JSONObject();
     }
 }
