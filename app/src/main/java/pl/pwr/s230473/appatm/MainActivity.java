@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    ArrayList<Currency> currencyList = new ArrayList<Currency>();
+    ArrayList<CurrencyExchange> currencyExchangesList = new ArrayList<CurrencyExchange>();
+
+    private final String[] currencyBaseTab = {"PLN","USD","EUR","GBP"};
 
     private int[] tabIcons = {
             R.drawable.ic_action_dollar_symbol,
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setupTabIcons();
 
         loadCurrency();
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     private void setupTabIcons() {
@@ -65,21 +70,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ExchangeFragment(currencyList), tabName[0]);
+        adapter.addFragment(new ExchangeFragment(currencyExchangesList), tabName[0]);
         adapter.addFragment(new CurrencyFragment(), tabName[1]);
         adapter.addFragment(new Tab3Fragment(), tabName[2]);
         viewPager.setAdapter(adapter);
     }
 
-    private void loadCurrency()
-    {
-        try {
-            JSONObject json = new JsonTask().execute().get();
-            parseJSON(json);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private void loadCurrency() {
+        for (int i = 0; i < currencyBaseTab.length; i++)
+        {
+            System.out.println(currencyBaseTab[i]);
+            String url = "https://api.exchangeratesapi.io/latest?base="+currencyBaseTab[i];
+            try {
+                JSONObject json = new JsonTask(url).execute().get();
+                parseJSON(json);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -87,23 +96,21 @@ public class MainActivity extends AppCompatActivity {
     {
         try {
             String base = reader.getString("base");
-            JSONObject rates  = reader.getJSONObject("rates");
-            JSONObject EUR  = rates.getJSONObject("EUR");
-            Double bid = EUR.getDouble("bid");
-            Double ask = EUR.getDouble("ask");
-            Currency eur = new Currency("EUR", bid, ask);
-            currencyList.add(eur);
-            JSONObject USD  = rates.getJSONObject("USD");
-            bid = USD.getDouble("bid");
-            ask = USD.getDouble("ask");
-            Currency usd = new Currency("USD", bid, ask);
-            currencyList.add(usd);
-
-            JSONObject PLN  = rates.getJSONObject("PLN");
-            bid = PLN.getDouble("bid");
-            ask = PLN.getDouble("ask");
-            Currency pln = new Currency("PLN", bid, ask);
-            currencyList.add(pln);
+            CurrencyExchange currencyExchange = new CurrencyExchange("dev","dev", base);
+            JSONObject rates = reader.getJSONObject("rates");
+            for (int i = 0; i < currencyBaseTab.length; i++)
+            {
+                if(base.equals(currencyBaseTab[i])) continue;
+                Double bid = rates.getDouble(currencyBaseTab[i]);
+                Double ask = bid;
+                //Aktualne API nie zwraca wartości kupna sprzedaży tylko wartość średnią
+                /*JSONObject currentJSON  = rates.getJSONObject(currencyBaseTab[i]);
+                Double bid = currentJSON.getDouble("bid");
+                Double ask = currentJSON.getDouble("ask");*/
+                Currency currency = new Currency(currencyBaseTab[i], bid, ask);
+                currencyExchange.addCurrent(currency);
+            }
+            currencyExchangesList.add(currencyExchange);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -111,19 +118,21 @@ public class MainActivity extends AppCompatActivity {
 
     private class JsonTask extends AsyncTask<String, String, JSONObject> {
 
-        /*@Override
-        protected void onPostExecute(JSONObject result) {
-            int i = 0;
-        }*/
+        private URL url;
+        public JsonTask(String url)
+        {
+            try {
+                this.url = new URL(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         protected JSONObject doInBackground(String... strings) {
             HttpURLConnection urlConnection = null;
-            URL url = null;
             String jsonString = null;
             try {
-                url = new URL("http://10.0.2.2/currency.php");
-
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setReadTimeout(10000 /* milliseconds */ );

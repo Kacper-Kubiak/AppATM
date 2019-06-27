@@ -1,15 +1,44 @@
 package pl.pwr.s230473.appatm;
 
-public class CurrencyExchange {
-    private  Currency fromCurrency;
-    private  Currency toCurrency;
+import java.util.ArrayList;
 
-    public CurrencyExchange(Currency fromCurrency, Currency toCurrency)
+public class CurrencyExchange {
+
+    private String name; //"Polski Złoty"
+    private String shortCode; // "PL"
+    private String code; // "PLN"
+
+    ArrayList<Currency> currencyList = new ArrayList<Currency>(); // Name, Bid, Ask
+
+    public CurrencyExchange(String name, String shortCode, String code,ArrayList<Currency> currencyList)
     {
-        this.fromCurrency = fromCurrency;
-        this.toCurrency = toCurrency;
+        this.currencyList = currencyList;
+        new CurrencyExchange(name, shortCode, code);
     }
 
-    public Currency getFromCurrency(){return fromCurrency;}
-    public Currency getToCurrency(){return toCurrency;}
+    public CurrencyExchange(String name, String shortCode, String code)
+    {
+        this.name = name;
+        this.shortCode = shortCode;
+        this.code = code;
+    }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getShortCode() { return shortCode; }
+    public void setShortCode(String shortCode) { this.shortCode = shortCode; }
+
+    public String getBase() { return getCode(); }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code=code; }
+
+    public ArrayList<Currency> getCurrencyList() { return currencyList; }
+    public void setCurrencyList(ArrayList<Currency> currencyList) { this.currencyList=currencyList; }
+
+    public void addCurrent(Currency currency)
+    {
+        currencyList.add(currency);
+    }
+
 }
